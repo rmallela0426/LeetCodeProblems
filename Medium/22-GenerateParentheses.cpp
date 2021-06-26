@@ -1,3 +1,4 @@
+
 /*
 *  Author: Raghavendra Mallela
 */
@@ -16,34 +17,55 @@ Input: n = 1
 Output: ["()"]
 */
 
-void generate(vector<string>& res, string curr, int open, int close) {
-    // Here we use DFS method to solve the problem where one branch is
-    // completed and procced to the next branch.
-
+/*
+ * Approach followed is a backtracking method where each parenthesis
+ * combination will be generated for open and close brackets.
+ *
+ * Base case:
+ * . when there are n open and close bracekets, a valid combination
+ *   is available
+*/
+void dfsBacktrack(vector<string>& res, string& curr, int open, int close) {
+    // Check if we have a valid combination
     if (open == 0 && close == 0) {
-        // Generated the parenthesis, pushing to result
+        // There is a valid combination of parenthisis is generated
         res.push_back(curr);
     }
 
-    // Generate the open parentheses
+    // First generate the open parenthesis first only when there are
+    // open bracket request
     if (open > 0) {
-        generate(res, curr + '(', open - 1, close);
+        // Add an open bracket to current string
+        curr += "(";
+        // perform a dfs on a current combination
+        dfsBacktrack(res, curr, open - 1, close);
+        // backtrack as we are done with one combination
+        curr.pop_back();
     }
 
-    // Generate the close parentheses
+    // Generate the close parenthesis only when there are enough close
+    // requests is greater than open
     if (close > open) {
-        generate(res, curr + ')', open, close - 1);
+        // Add a close bracket to current string
+        curr += ")";
+        // perform a dfs on a current combination
+        dfsBacktrack(res, curr, open, close - 1);
+        // backtrack as we are done with one combination
+        curr.pop_back();
     }
-}
-
-void generateParentheses(int n) {
-    vector<string> res;
-    if (n == 0) {
-        return;
-    }
-    string cur = "";
-
-    generate(res, cur, n, n);
 
     return;
+}
+
+vector<string> generateParenthesis(int n) {
+    // variable to store the result
+    vector<string> res;
+
+    // variable to store the current combination of brakets
+    string curr;
+
+    // Calling the dfs backtrack method to generate the parenthesis
+    dfsBacktrack(res, curr, n, n);
+
+    return res;
 }
