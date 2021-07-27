@@ -93,3 +93,46 @@ int maxSubArray(vector<int>& nums) {
      }
      return maxsum;
 }
+
+/* Approach followed is sliding window technique where the wend
+ * traverse from start to input vector and calculate the running
+ * sum and update the result if it is maximum. If the running sum
+ * is less than 0, then slide the window by incrementing window
+ * start.
+*/
+int maxSubArray(vector<int>& nums) {
+    // Check if input vector is empty
+    if (nums.empty()) {
+        // Input vector is empty, the sum will be zero
+        return 0;
+    }
+
+    // Initialize the window values
+    int wStart = 0;
+    int wEnd = 0;
+
+    // Running sum
+    int sum = 0;
+    // Result for storing Maximum subarray sum
+    int maxSum = INT_MIN;
+
+    // Traverse the input vector
+    while (wEnd < nums.size()) {
+        // Calculate the current sum
+        sum += nums[wEnd];
+
+        // Update the result
+        maxSum = max(maxSum, sum);
+
+        // Check if the current sum is <= 0
+        if (sum <= 0) {
+            // Current sum is <= 0
+            // slide the window and reset the sum
+            wStart++;
+            sum = 0;
+        }
+        wEnd++;
+    }
+
+    return maxSum;
+}
